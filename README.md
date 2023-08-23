@@ -16,3 +16,15 @@ Before you begin, ensure you have the following installed:
    ```bash
    git clone https://github.com/yourusername/voting-app.git
    cd voting-app
+Build and push the Docker images to Docker Hub:
+
+bash
+Copy code
+# Log in to Docker Hub
+docker login
+
+# Build and tag the images
+docker-compose build
+
+# Push the images to Docker Hub
+docker-compose push
