@@ -19,12 +19,15 @@ Before you begin, ensure you have the following installed:
 Build and push the Docker images to Docker Hub:
 
 # Log in to Docker Hub
+   ```bash
    docker login
 
 # Build and tag the images
+   ```bash
    docker-compose build
 
 # Push the images to Docker Hub
+   ```bash
    docker-compose push
 
 Update the Docker Compose configuration:
