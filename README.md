@@ -16,15 +16,43 @@ Before you begin, ensure you have the following installed:
    ```bash
    git clone https://github.com/yourusername/voting-app.git
    cd voting-app
-Build and push the Docker images to Docker Hub:
+2. **Build and push the Docker images to Docker Hub:**
 
-bash
-Copy code
-# Log in to Docker Hub
-docker login
+   ```bash
+   # Log in to Docker Hub
+   docker login
+   
+   # Build and tag the images
+   docker-compose build
+   
+   # Push the images to Docker Hub
+   docker-compose push
+3. **Update the Docker Compose configuration:**
+   
+   Open the docker-compose.yml file and replace <docker_hub_username> with your Docker Hub username.
+4. **Start the application containers using Docker Compose:**
+   ```bash
+   docker-compose up
+5. **Access the application in your web browser:**
+   ```bash
+   Voting Page: http://localhost:5000/
+   Results Page: http://localhost:5001/result
 
-# Build and tag the images
-docker-compose build
+## Usage
 
-# Push the images to Docker Hub
-docker-compose push
+Visit the voting page (http://localhost:5000/) and vote for your favorite option.
+Click on the "See Results" link to view the current voting results.
+
+## Cleanup
+
+   To stop and remove the containers, press Ctrl + C in the terminal where you started Docker Compose. Then, run:
+      
+      docker-compose down
+
+## Customize
+
+Feel free to customize and expand this application to match your requirements. You can modify the HTML templates, add more options, enhance security, and integrate additional features.
+
+## Credits
+
+This voting application is a simple example created for educational purposes.
