@@ -1,0 +1,208 @@
+@import url(//fonts.googleapis.com/css?family=Open+Sans:400,700,600);
+
+* {
+  box-sizing: border-box;
+}
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #F7F8F9;
+  height: 100vh;
+  font-family: 'Open Sans';
+}
+
+/* form border edit */
+.button-container {
+  background-color: #ffffff;
+  border-radius: 50px;
+  padding: 35px;
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  max-width: 1500px;
+  margin: 0 auto;
+}
+
+button {
+  border-radius: 0;
+  width: 100%;
+  height: 50%;
+}
+
+/* Add this to your existing CSS */
+.button-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.button-group {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Adjust margins for spacing between button groups */
+.button-group:not(:last-child) {
+  margin-right: 40px; /* Increase spacing between button groups */
+}
+
+/* Style for the group headings */
+.button-group h2 {
+  font-size: 22px;
+  margin-bottom: 10px;
+}
+
+h1 {
+  font-size: 36px; /* Adjust the font size as needed */
+}
+
+/* Hide the success message by default */
+.hidden {
+  display: none;
+}
+
+/* You can add more styling as needed */
+
+button[type="submit"] {
+  -webkit-appearance: none;
+  -webkit-border-radius: 0;
+}
+
+button i {
+  float: right;
+  padding-right: 30px;
+  margin-top: 3px;
+}
+
+/* button.a,
+button.b,
+button.c {
+  background-color: #00cbca;
+}
+
+button.d,
+button.e,
+button.f {
+  background-color: #00cbca;
+} */
+
+
+#tip {
+  text-align: left;
+  color: #c0c9ce;
+  font-size: 14px;
+}
+
+#hypelinks{
+  position: absolute;
+  bottom: 40px;
+  right: 0;
+  left: 0;
+  color: #8f9ea8;
+  font-size: 18px;
+}
+
+
+#hostname {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  color: #8f9ea8;
+  font-size: 18px;
+}
+
+#content-container {
+  z-index: 2;
+  position: relative;
+  margin: 0 auto;
+  display: table;
+  padding: 10px;
+  max-width: 940px;
+  height: 100%;
+}
+
+#content-container-center {
+  display: table-cell;
+  text-align: center;
+}
+
+#content-container-center h2 {
+  color: #254356;
+}
+
+#choice {
+  transition: all 300ms linear;
+  line-height: 1.3em;
+  display: inline;
+  vertical-align: middle;
+  font-size: 3em;
+}
+
+/* #choice button:hover{
+  background-color: #0d9eed;
+} */
+
+.button-group button {
+  display: block;
+  opacity: 0.5;
+  height: 80px;
+  width: 300px;
+  border-radius: 90px;
+  background-color: #035644;
+  color: white;
+  text-transform: uppercase;
+  font-size: 18px;
+  font-weight: 700;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  text-align: left;
+  padding-left: 50px;
+  outline: none;
+}
+
+#background-stats {
+  z-index: 1;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+}
+
+#background-stats div {
+  transition: width 400ms ease-in-out;
+  display: inline-block;
+  margin-bottom: -4px;
+  width: 50%;
+  height: 100%;
+}
+
+/* Style for the selected button */
+.vote-button.selected {
+  background-color: #043737; /* Change to the desired color for selected buttons */
+  color: white;
+  outline: none; /* Disable focus outline */
+  /* Add a highlighting effect */
+  box-shadow: 0 0 10px #043737; /* You can adjust the shadow color and size */
+}
+
+/* Style for the disabled buttons */
+.vote-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background-color: #ccc; /* Grayed-out background color for non-selected disabled buttons */
+  color: #888; /* Grayed-out text color for non-selected disabled buttons */
+  outline: none; /* Disable focus outline */
+}
+
+/* Style for the selected and disabled button */
+.vote-button.selected:disabled {
+  background-color: #d6bf11; /* Change to a darker color for selected disabled button */
+  color: white; /* Text color for selected disabled button */
+}
+
+/* Disable focus outline on hover for all buttons */
+.vote-button:hover {
+  outline: none;
+}
+
+
+
