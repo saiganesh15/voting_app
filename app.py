@@ -1,19 +1,23 @@
-from flask import Flask, render_template, request
+from flask import Flask, redirect, render_template, request, make_response, g
 import redis
 import psycopg2
+import socket
 from psycopg2 import Error
 import json  # Import JSON module to handle JSON data
+
+hostname = socket.gethostname()
+ip_address = socket.gethostbyname(hostname)
 
 app = Flask(__name__)
 
 # Replace with your PostgreSQL database connection details
-db_host = "db"
+db_host = "localhost"
 db_name = "postgres"
 db_user = "postgres"
-db_password = "postgres"
+db_password = "3636"
 
 # Replace with your Redis connection details
-redis_host = "redis"
+redis_host = "localhost"
 redis_port = 6379
 redis_db = 0
 
@@ -22,9 +26,10 @@ redis_client = redis.Redis(host=redis_host, port=redis_port, db=redis_db)
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    transfer_votes()  # Call the migration function
+    
+    return redirect("http://192.168.59.1:5001") # You can return a message if needed
 
-@app.route('/', methods=['POST'])
 def transfer_votes():
     # Retrieve votes from Redis and insert into PostgreSQL
     votes_data = redis_client.lrange('votes', 0, -1)
@@ -61,7 +66,8 @@ def transfer_votes():
         cursor.execute("TRUNCATE TABLE votes")
         db.commit()
         cursor.close()
-        
+
+        cursor = db.cursor()
         # Assuming the table structure is (voter_id TEXT, vote TEXT, timestamp TIMESTAMP)
         for vote_json in votes_data:
             vote_data = json.loads(vote_json.decode())  # Decode and load JSON data
@@ -77,8 +83,6 @@ def transfer_votes():
     except Error as e:
         message = f"Error transferring votes: {e}"
         print(e)  # Print the error for debugging
-    
-    return render_template('index.html', message=message)
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5010, debug=True)
+    app.run(host='0.0.0.0', port=5002, debug=True)

@@ -7,6 +7,8 @@ services:
     depends_on:
       - redis
       - db
+    networks:
+      - database
 
   redis:
     image: "redis:latest"
@@ -14,6 +16,8 @@ services:
       - "6379:6379"
     volumes:
       - C:\redis_data:/data
+    networks:
+      - database
 
   db:
     image: "postgres:latest"
@@ -23,3 +27,11 @@ services:
       POSTGRES_PASSWORD: "postgres"
     ports:
       - "5432:5432"
+    volumes:
+      - C:\postgres_data:/var/lib/postgresql/data
+    networks:
+      - database
+
+networks:
+  database:
+    driver: bridge
