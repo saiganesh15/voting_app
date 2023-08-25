@@ -12,6 +12,7 @@ option_c = os.getenv('OPTION_C', "Nepal")
 option_d = os.getenv('OPTION_D', "Srilanka")
 option_e = os.getenv('OPTION_E', "Afghanistan")
 option_f = os.getenv('OPTION_F', "Bangladesh")
+
 hostname = socket.gethostname()
 ip_address = socket.gethostbyname(hostname)
 
@@ -23,7 +24,7 @@ app.logger.setLevel(logging.INFO)
 
 def get_redis():
     if not hasattr(g, 'redis'):
-        g.redis = Redis(host="redis", port=6379, db=0, socket_timeout=5)
+        g.redis = Redis(host="localhost", port=6379, db=0, socket_timeout=5)
     return g.redis
 
 @app.route("/vote", methods=['POST'])

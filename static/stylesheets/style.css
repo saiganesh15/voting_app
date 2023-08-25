@@ -1,25 +1,59 @@
 @import url(//fonts.googleapis.com/css?family=Open+Sans:400,700,600);
 
-* {
-  box-sizing: border-box;
+/* box colour for div tags 
+    * {
+      box-sizing: border-box;
+      background-color: lightgray;
+      border-radius: 40px;
+    } */
+
+/* border customize outer page*/
+#content-container {
+  z-index: 2;
+  margin: 0 auto;
+  display: table;
+  padding: 10px;
+  max-width: 940px;
+  background-color: white;
+  border-radius: 30px;
+  position: fixed;
+  top: 50%;
+  /* Adjust this value to vertically center the container */
+  left: 50%;
+  /* Adjust this value to horizontally center the container */
+  transform: translate(-50%, -50%);
+  /* Center the container precisely */
+  height: 580px;
+  /* Set the specific height you want */
+  overflow-y: auto;
+  /* Add vertical scrollbar if content exceeds container height */
+  z-index: 2;
 }
+
 html,
 body {
   margin: 0;
   padding: 0;
-  background-color: #F7F8F9;
+  background-color: lightsteelblue;
   height: 100vh;
   font-family: 'Open Sans';
+  overflow-y: auto;
+  /* Enable vertical scrolling when needed */
+}
+
+/* Prevent horizontal scrolling by hiding it */
+body::-webkit-scrollbar {
+  width: 0;
 }
 
 /* form border edit */
 .button-container {
-  background-color: #ffffff;
-  border-radius: 50px;
-  padding: 35px;
+  background-color: wheat;
+  border-radius: 20px;
+  padding: 15px;
   box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
   text-align: center;
-  max-width: 1500px;
+  max-width: 1000px;
   margin: 0 auto;
 }
 
@@ -29,75 +63,45 @@ button {
   height: 50%;
 }
 
-/* Add this to your existing CSS */
+/* center tile customize border */
 .button-container {
   display: flex;
   justify-content: space-between;
-}
-
-.button-group {
-  display: flex;
-  flex-direction: column;
+  background-color: white;
+  border-radius: 20px;
+  position: left;
 }
 
 /* Adjust margins for spacing between button groups */
 .button-group:not(:last-child) {
-  margin-right: 40px; /* Increase spacing between button groups */
+  margin-right: 40px;
+  /* Increase spacing between button groups */
 }
 
 /* Style for the group headings */
 .button-group h2 {
   font-size: 22px;
   margin-bottom: 10px;
+  text-align: center;
+  background-color: whitesmoke;
+  border-radius: 12px;
 }
 
 h1 {
-  font-size: 36px; /* Adjust the font size as needed */
-}
-
-/* Hide the success message by default */
-.hidden {
-  display: none;
+  color: black;
+  font-size: 36px;
+  background-color: white;
+  border-radius: 40px;
+  /* Adjust the font size as needed */
 }
 
 /* You can add more styling as needed */
-
-button[type="submit"] {
-  -webkit-appearance: none;
-  -webkit-border-radius: 0;
-}
-
-button i {
-  float: right;
-  padding-right: 30px;
-  margin-top: 3px;
-}
-
-/* button.a,
-button.b,
-button.c {
-  background-color: #00cbca;
-}
-
-button.d,
-button.e,
-button.f {
-  background-color: #00cbca;
-} */
-
-
-#tip {
-  text-align: left;
-  color: #c0c9ce;
-  font-size: 14px;
-}
-
-#hypelinks{
+#hypelinks {
   position: absolute;
   bottom: 40px;
   right: 0;
   left: 0;
-  color: #8f9ea8;
+  color: lightslategray;
   font-size: 18px;
 }
 
@@ -107,96 +111,73 @@ button.f {
   bottom: 0;
   right: 0;
   left: 0;
-  color: #8f9ea8;
+  color: grey;
   font-size: 18px;
 }
 
-#content-container {
-  z-index: 2;
-  position: relative;
-  margin: 0 auto;
-  display: table;
-  padding: 10px;
-  max-width: 940px;
-  height: 100%;
-}
-
+/* title and bottom alignment */
 #content-container-center {
   display: table-cell;
   text-align: center;
+  background-color: white;
 }
 
 #content-container-center h2 {
   color: #254356;
 }
 
-#choice {
-  transition: all 300ms linear;
-  line-height: 1.3em;
-  display: inline;
-  vertical-align: middle;
-  font-size: 3em;
-}
-
-/* #choice button:hover{
-  background-color: #0d9eed;
-} */
-
+/* button customization - options buttons */
 .button-group button {
   display: block;
   opacity: 0.5;
-  height: 80px;
-  width: 300px;
-  border-radius: 90px;
-  background-color: #035644;
+  height: 50px;
+  width: 280px;
+  border-radius: 10px;
+  border-color: teal;
+  background-color: teal;
   color: white;
-  text-transform: uppercase;
+  /* text-transform: uppercase; */
   font-size: 18px;
-  font-weight: 700;
-  margin-top: 10px;
-  margin-bottom: 10px;
+  font-weight: 900;
+  margin-top: 12px;
+  margin-bottom: 12px;
   text-align: left;
-  padding-left: 50px;
+  padding-left: 20px;
   outline: none;
-}
-
-#background-stats {
-  z-index: 1;
-  height: 100%;
-  width: 100%;
-  position: absolute;
-}
-
-#background-stats div {
-  transition: width 400ms ease-in-out;
-  display: inline-block;
-  margin-bottom: -4px;
-  width: 50%;
-  height: 100%;
 }
 
 /* Style for the selected button */
 .vote-button.selected {
-  background-color: #043737; /* Change to the desired color for selected buttons */
+  background-color: #043737;
+  /* Change to the desired color for selected buttons */
   color: white;
-  outline: none; /* Disable focus outline */
+  outline: none;
+  /* Disable focus outline */
   /* Add a highlighting effect */
-  box-shadow: 0 0 10px #043737; /* You can adjust the shadow color and size */
+  box-shadow: 0 0 10px #043737;
+  /* You can adjust the shadow color and size */
 }
 
 /* Style for the disabled buttons */
 .vote-button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
-  background-color: #ccc; /* Grayed-out background color for non-selected disabled buttons */
-  color: #888; /* Grayed-out text color for non-selected disabled buttons */
-  outline: none; /* Disable focus outline */
+  background-color: gainsboro;
+  border-color: gainsboro;
+  /* Grayed-out background color for non-selected disabled buttons */
+  color: #888;
+  /* Grayed-out text color for non-selected disabled buttons */
+  outline: none;
+  /* Disable focus outline */
 }
 
 /* Style for the selected and disabled button */
 .vote-button.selected:disabled {
-  background-color: #d6bf11; /* Change to a darker color for selected disabled button */
-  color: white; /* Text color for selected disabled button */
+  background-color: darkgoldenrod;
+  border-color: darkgoldenrod;
+  /* Change to a darker color for selected disabled button */
+  color: white;
+  /* Text color for selected disabled button */
 }
 
 /* Disable focus outline on hover for all buttons */
@@ -204,5 +185,85 @@ button.f {
   outline: none;
 }
 
+.container {
+  text-align: right;
+}
+
+.refresh {
+  display: block;
+  opacity: 0.7;
+  height: 42px;
+  width: 130px;
+  border-radius: 10px;
+  border-color: brown;
+  background-color: brown;
+  color: white;
+  text-transform: uppercase;
+  font-size: 15px;
+  font-weight: 900;
+  margin-top: 12px;
+  margin-bottom: 1px;
+  text-align: left;
+  padding-left: 10px;
+  outline: none;
+  position: absolute;
+  bottom: 140px;
+  left: 250px;
+}
+
+/* Style for the disabled refresh button */
+.refresh:disabled {
+  color: #888;
+  background-color: darkgray;
+  border-color: lightgray;
+  cursor: not-allowed;
+}
+
+/* Disable hover effect on the refresh button when it's disabled */
+.refresh:disabled:hover {
+  color: #888;
+  background-color: darkgray;
+  border-color: lightgray;
+  /* Set the disabled text color */
+  /* Set any other disabled styles you want for hover */
+}
 
 
+.vote-results {
+  display: block;
+  opacity: 0.7;
+  height: 42px;
+  width: 150px;
+  border-radius: 10px;
+  border-color: teal;
+  background-color: teal;
+  color: white;
+  text-transform: uppercase;
+  font-size: 15px;
+  font-weight: 900;
+  margin-top: 12px;
+  margin-bottom: 1px;
+  text-align: left;
+  padding-left: 10px;
+  outline: none;
+  position: absolute;
+  bottom: 75px;
+  right: 260px;
+}
+
+/* Style for the disabled refresh button */
+.vote-results:disabled {
+  color: #888;
+  background-color: darkgray;
+  border-color: lightgray;
+  cursor: not-allowed;
+}
+
+/* Disable hover effect on the refresh button when it's disabled */
+.vote-results:disabled:hover {
+  color: #888;
+  background-color: darkgray;
+  border-color: lightgray;
+  /* Set the disabled text color */
+  /* Set any other disabled styles you want for hover */
+}

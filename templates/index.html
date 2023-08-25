@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <meta charset="utf-8">
   <title>Poll</title>
@@ -9,7 +10,9 @@
   <meta name="author" content="Tutum dev team">
   <link rel='stylesheet' href="{{ url_for('static',filename='stylesheets/style.css') }}" />
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
+
 <body>
   <div id="content-container">
     <div id="content-container-center">
@@ -32,9 +35,11 @@
           </form>
         </div>
       </div>
-      <div id="hypelinks">
-        <h4>Migrate data to different DB via <a href="http://{{ ip_address }}:5003">{{ ip_address }}:5003</a></h5>
-        <h4>Check the poll results in <a href="http://{{ ip_address }}:5002">{{ ip_address }}:5002</a></h5>
+      <div>
+        <button class="vote-results" id="vote-results">Poll Results</button>
+      </div>
+      <div>
+        <button class="refresh" id="refresh">Vote Again</button>
       </div>
       <div id="hostname">
         <h6>Processed by container ID: {{hostname}}</h6>
@@ -44,56 +49,78 @@
   <script src="http://code.jquery.com/jquery-latest.min.js" type="text/javascript"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
   <script>
-        $(document).ready(function () {
-            // Check if user has voted
-            var hasVoted = localStorage.getItem('hasVoted');
-            if (hasVoted) {
-                $(".vote-button").prop('disabled', true);
-                $(".vote-button[data-vote='" + hasVoted + "']").addClass("selected");
+    $(document).ready(function () {
+      // Check if user has voted
+      var hasVoted = localStorage.getItem('hasVoted');
+
+      // Disable the "Refresh" and "Poll results"button by default
+      $(".refresh").prop('disabled', true);
+      $(".vote-results").prop('disabled', true);
+
+      if (hasVoted) {
+        $(".vote-button").prop('disabled', true);
+        $(".vote-button[data-vote='" + hasVoted + "']").addClass("selected");
+      }
+
+      // Handle button clicks
+      $(".vote-button").click(function () {
+        console.log("Button clicked");
+        var voteButton = $(this);
+        var vote = voteButton.val();
+        var form = voteButton.closest("form");
+
+        // Check if the clicked button is already selected
+        if (!voteButton.hasClass("selected")) {
+          $.ajax({
+            url: "/vote",
+            method: "POST",
+            data: { vote: vote },
+            success: function (response) {
+              console.log("Vote successfully recorded:", vote);
+              // Disable all buttons
+              $(".vote-button").prop('disabled', true);
+
+              // Add checkmark to the selected button
+              voteButton.html(voteButton.html() + ' <i class="fa fa-check-circle"></i>');
+
+              // Highlight the selected button
+              voteButton.addClass("selected");
+
+              // Store vote status
+              localStorage.setItem('hasVoted', vote);
+
+              // Show the captured vote message
+              form.find(".vote-message").removeClass("hidden");
+
+              // Enable the "Refresh" and "Poll results" button after submission
+              $(".refresh").prop('disabled', false);
+              $(".vote-results").prop('disabled', false);
+            },
+            error: function (xhr, status, error) {
+              console.error("Error recording vote:", error);
             }
+          });
+        }
+        // Prevent form submission
+        return false;
+      });
 
-            // Handle button clicks
-            $(".vote-button").click(function () {
-                console.log("Button clicked");
-                var voteButton = $(this);
-                var vote = voteButton.val();
-                var form = voteButton.closest("form");
+      // Remove hasVoted information on page refresh
+      $(window).on('beforeunload', function () {
+        localStorage.removeItem('hasVoted');
+      });
 
-                // Check if the clicked button is already selected
-                if (!voteButton.hasClass("selected")) {
-                $.ajax({
-                    url: "/vote",
-                    method: "POST",
-                    data: { vote: vote },
-                    success: function (response) {
-                        console.log("Vote successfully recorded:", vote);
-                        // Disable all buttons
-                        $(".vote-button").prop('disabled', true);
-                        // Add checkmark to the selected button
-                        voteButton.html(voteButton.html() + ' <i class="fa fa-check-circle"></i>');
-                        // Highlight the selected button
-                        voteButton.addClass("selected");
-                        // Show success message
-                        $("#success-message").removeClass("hidden");
-                        // Store vote status
-                        localStorage.setItem('hasVoted', vote);
-                        // Show the captured vote message
-                        form.find(".vote-message").removeClass("hidden");
-                    },
-                    error: function (xhr, status, error) {
-                        console.error("Error recording vote:", error);
-                    }
-                });
-            }
-            // Prevent form submission
-            return false;
-            });
+      // Handle the "Refresh" button click
+      $("#refresh").click(function () {
+        location.reload(); // Reload the page
+      });
 
-            // Remove hasVoted information on page refresh
-            $(window).on('beforeunload', function () {
-                localStorage.removeItem('hasVoted');
-            });
-        });
+      document.getElementById("vote-results").addEventListener("click", function () {
+        // Change the URL to the desired destination
+        window.location.href = "http://192.168.59.1:5002"; // Replace with your desired URL
+      });
+    });
   </script>
 </body>
+
 </html>
