@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>Poll</title>
+  <base href="/index.html">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="keywords" content="docker-compose, docker, stack">
+  <meta name="author" content="Tutum dev team">
+  <link rel='stylesheet' href="{{ url_for('static',filename='stylesheets/style.css') }}" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+</head>
+
+<body>
+  <div id="content-container">
+    <div id="content-container-center">
+      <h1>Poll Results</h1>
+      <div class="button-container">
+        <div class="button-group">
+          <h2>Group A</h2>
+          <form id="choice-a" name="form" method="POST" action="/">
+            <button id="a" type="submit" name="vote" class="vote-button a" value="a"
+              style="background-image: linear-gradient(to right, #70be34 {{ vote_data[0]['percentage'] }}%, gainsboro {{ vote_data[0]['percentage'] }}%, gainsboro 1%);">{{
+              vote_data[0]['option']}} ({{ vote_data[0]['percentage'] }})%
+              <!-- <span class="percentage">{{ vote_data[0]['percentage'] }}%</span> -->
+            </button>
+            <button id="b" type="submit" name="vote" class="vote-button b" value="b"
+              style="background-image: linear-gradient(to right, #70be34 {{ vote_data[1]['percentage'] }}%, gainsboro {{ vote_data[1]['percentage'] }}%, gainsboro 1%);">{{
+              vote_data[1]['option']}} ({{ vote_data[1]['percentage'] }})%
+            </button>
+            <button id="c" type="submit" name="vote" class="vote-button c" value="c"
+              style="background-image: linear-gradient(to right, #70be34 {{ vote_data[2]['percentage'] }}%, gainsboro {{ vote_data[2]['percentage'] }}%, gainsboro 1%);">{{
+              vote_data[2]['option']}} ({{ vote_data[2]['percentage'] }})%
+            </button>
+          </form>
+        </div>
+        <div class="button-group">
+          <h2>Group B</h2>
+          <form id="choice-b" name="form" method="POST" action="/">
+            <button id="d" type="submit" name="vote" class="vote-button d" value="d"
+              style="background-image: linear-gradient(to right, #70be34 {{ vote_data[3]['percentage'] }}%, gainsboro {{ vote_data[3]['percentage'] }}%, gainsboro 1%);">{{
+              vote_data[3]['option']}} ({{ vote_data[3]['percentage'] }})%
+            </button>
+            <button id="e" type="submit" name="vote" class="vote-button e" value="e"
+              style="background-image: linear-gradient(to right, #70be34 {{ vote_data[4]['percentage'] }}%, gainsboro {{ vote_data[4]['percentage'] }}%, gainsboro 1%);">{{
+              vote_data[4]['option']}} ({{ vote_data[4]['percentage'] }})%
+            </button>
+            <button id="f" type="submit" name="vote" class="vote-button f" value="f"
+              style="background-image: linear-gradient(to right, #70be34 {{ vote_data[5]['percentage'] }}%, gainsboro {{ vote_data[5]['percentage'] }}%, gainsboro 1%);">{{
+              vote_data[5]['option']}} ({{ vote_data[5]['percentage'] }})%
+            </button>
+          </form>
+        </div>
+      </div>
+      <div>
+        <button class="vote-again" id="vote-again">Vote Again</button>
+      </div>
+      <div id="hostname">
+        <h6>Processed by container ID: {{hostname}}</h6>
+      </div>
+    </div>
+  </div>
+  <script src="http://code.jquery.com/jquery-latest.min.js" type="text/javascript"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+  <script>
+    $(document).ready(function () {
+      // Check if user has voted
+      var hasVoted = localStorage.getItem('hasVoted');
+
+      // Disable the "Refresh" and "Poll results"button by default
+      $(".refresh").prop('disabled', true);
+      $(".vote-button").prop('disabled', true);
+
+      if (hasVoted) {
+        $(".vote-button").prop('disabled', true);
+        $(".vote-button[data-vote='" + hasVoted + "']").addClass("selected");
+      }
+
+      // Handle button clicks
+      $(".vote-button").click(function () {
+        console.log("Button clicked");
+        var voteButton = $(this);
+        var vote = voteButton.val();
+        var form = voteButton.closest("form");
+
+        // Check if the clicked button is already selected
+        if (!voteButton.hasClass("selected")) {
+          $.ajax({
+            url: "/vote",
+            method: "POST",
+            data: { vote: vote },
+            success: function (response) {
+              console.log("Vote successfully recorded:", vote);
+              // Disable all buttons
+              $(".vote-button").prop('disabled', true);
+
+              // Add checkmark to the selected button
+              voteButton.html(voteButton.html() + ' <i class="fa fa-check-circle"></i>');
+
+              // Highlight the selected button
+              voteButton.addClass("selected");
+
+              // Store vote status
+              localStorage.setItem('hasVoted', vote);
+
+              // Show the captured vote message
+              form.find(".vote-message").removeClass("hidden");
+
+              // Enable the "Refresh" and "Poll results" button after submission
+              $(".refresh").prop('disabled', false);
+              $(".vote-results").prop('disabled', false);
+            },
+            error: function (xhr, status, error) {
+              console.error("Error recording vote:", error);
+            }
+          });
+        }
+        // Prevent form submission
+        return false;
+      });
+
+      // Remove hasVoted information on page refresh
+      $(window).on('beforeunload', function () {
+        localStorage.removeItem('hasVoted');
+      });
+
+      // Handle the "Refresh" button click
+      $("#refresh").click(function () {
+        location.reload(); // Reload the page
+      });
+
+      document.getElementById("vote-again").addEventListener("click", function () {
+        // Change the URL to the desired destination
+        window.location.href = "http://192.168.59.1:5000/"; // Replace with your desired URL
+      });
+    });
+  </script>
+</body>
+
+</html>
