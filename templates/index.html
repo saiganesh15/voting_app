@@ -58,6 +58,9 @@
       <div>
         <button class="vote-again" id="vote-again">Vote Again</button>
       </div>
+      <div>
+        <button class="refresh" id="refresh">Refresh Votes</button>
+      </div>
       <div id="hostname">
         <h6>Processed by container ID: {{hostname}}</h6>
       </div>
@@ -67,60 +70,8 @@
   <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
   <script>
     $(document).ready(function () {
-      // Check if user has voted
-      var hasVoted = localStorage.getItem('hasVoted');
 
-      // Disable the "Refresh" and "Poll results"button by default
-      $(".refresh").prop('disabled', true);
       $(".vote-button").prop('disabled', true);
-
-      if (hasVoted) {
-        $(".vote-button").prop('disabled', true);
-        $(".vote-button[data-vote='" + hasVoted + "']").addClass("selected");
-      }
-
-      // Handle button clicks
-      $(".vote-button").click(function () {
-        console.log("Button clicked");
-        var voteButton = $(this);
-        var vote = voteButton.val();
-        var form = voteButton.closest("form");
-
-        // Check if the clicked button is already selected
-        if (!voteButton.hasClass("selected")) {
-          $.ajax({
-            url: "/vote",
-            method: "POST",
-            data: { vote: vote },
-            success: function (response) {
-              console.log("Vote successfully recorded:", vote);
-              // Disable all buttons
-              $(".vote-button").prop('disabled', true);
-
-              // Add checkmark to the selected button
-              voteButton.html(voteButton.html() + ' <i class="fa fa-check-circle"></i>');
-
-              // Highlight the selected button
-              voteButton.addClass("selected");
-
-              // Store vote status
-              localStorage.setItem('hasVoted', vote);
-
-              // Show the captured vote message
-              form.find(".vote-message").removeClass("hidden");
-
-              // Enable the "Refresh" and "Poll results" button after submission
-              $(".refresh").prop('disabled', false);
-              $(".vote-results").prop('disabled', false);
-            },
-            error: function (xhr, status, error) {
-              console.error("Error recording vote:", error);
-            }
-          });
-        }
-        // Prevent form submission
-        return false;
-      });
 
       // Remove hasVoted information on page refresh
       $(window).on('beforeunload', function () {
@@ -133,8 +84,26 @@
       });
 
       document.getElementById("vote-again").addEventListener("click", function () {
-        // Change the URL to the desired destination
-        window.location.href = "http://192.168.59.1:5000/"; // Replace with your desired URL
+        // Get the current page URL
+        var currentUrl = window.location.href;
+
+        // Replace the port number
+        var newUrl = currentUrl.replace(":5001/", ":5000/");
+
+        // Redirect to the new URL
+        window.location.href = newUrl;
+      });
+
+
+      document.getElementById("refresh").addEventListener("click", function () {
+        // Get the current page URL
+        var currentUrl = window.location.href;
+
+        // Replace the port number
+        var newUrl = currentUrl.replace(":5001/", ":5001/");
+
+        // Redirect to the new URL
+        window.location.href = newUrl;
       });
     });
   </script>
