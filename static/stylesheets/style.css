@@ -267,3 +267,9 @@ h1 {
   /* Set the disabled text color */
   /* Set any other disabled styles you want for hover */
 }
+
+/* Responsive styles for smaller screens */
+@media screen and (max-width: 600px) {
+  body {
+      background-color: lightblue;
+  }

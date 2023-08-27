@@ -42,7 +42,7 @@
         <button class="refresh" id="refresh">Vote Again</button>
       </div>
       <div id="hostname">
-        <h6>Processed by container ID: {{hostname}}</h6>
+        <h6>Processed by container ID: {{hostname}}, {{aws_public_ip}}</h6>
       </div>
     </div>
   </div>
@@ -116,8 +116,14 @@
       });
 
       document.getElementById("vote-results").addEventListener("click", function () {
-        // Change the URL to the desired destination
-        window.location.href = "http://192.168.59.1:5002"; // Replace with your desired URL
+        // Get the current page URL
+        var currentUrl = window.location.href;
+
+        // Replace the port number
+        var newUrl = currentUrl.replace(":5000/", ":5001/");
+
+        // Redirect to the new URL
+        window.location.href = newUrl;
       });
     });
   </script>

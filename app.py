@@ -18,13 +18,16 @@ ip_address = socket.gethostbyname(hostname)
 
 app = Flask(__name__)
 
+
+
 gunicorn_error_logger = logging.getLogger('gunicorn.error')
 app.logger.handlers.extend(gunicorn_error_logger.handlers)
 app.logger.setLevel(logging.INFO)
 
 def get_redis():
     if not hasattr(g, 'redis'):
-        g.redis = Redis(host="localhost", port=6379, db=0, socket_timeout=5)
+        g.redis = Redis(host="redis", port=6379, db=0, socket_timeout=5)
+        app.logger.info("Migration Synced")
     return g.redis
 
 @app.route("/vote", methods=['POST'])
@@ -73,5 +76,7 @@ def hello():
     return resp
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=5000, debug=True, threaded=True)
+    if os.environ.get('FLASK_ENV') == 'production':
+        app.logger.info("Starting the app in production mode.")
+    app.run(host='0.0.0.0', port=5000, debug=False, threaded=True)
 
