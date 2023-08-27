@@ -11,10 +11,10 @@ COPY . /app
 RUN pip install -r requirements.txt
 
 # Expose the port the app runs on
-EXPOSE 5010
+# EXPOSE 5002
 
 # # Define environment variable for Flask to run in production mode
 # ENV FLASK_ENV=production
 
 # Run the application
-CMD ["python", "worker.py"]
+CMD ["python", "app.py"]

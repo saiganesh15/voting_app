@@ -1,3 +1,7 @@
+import datetime
+import logging
+import os
+import time
 from flask import Flask, redirect, render_template, request, make_response, g
 import redis
 import psycopg2
@@ -10,25 +14,43 @@ ip_address = socket.gethostbyname(hostname)
 
 app = Flask(__name__)
 
+gunicorn_error_logger = logging.getLogger('gunicorn.error')
+app.logger.handlers.extend(gunicorn_error_logger.handlers)
+app.logger.setLevel(logging.INFO)
+
 # Replace with your PostgreSQL database connection details
-db_host = "localhost"
+db_host = "db"
 db_name = "postgres"
 db_user = "postgres"
-db_password = "3636"
+db_password = "postgres"
 
 # Replace with your Redis connection details
-redis_host = "localhost"
+redis_host = "redis"
 redis_port = 6379
 redis_db = 0
 
 # Initialize Redis client
 redis_client = redis.Redis(host=redis_host, port=redis_port, db=redis_db)
 
-@app.route('/')
-def index():
-    transfer_votes()  # Call the migration function
-    
-    return redirect("http://192.168.59.1:5001") # You can return a message if needed
+print(f"Connecting to database: host={db_host}, name={db_name}, user={db_user}")
+db = psycopg2.connect(
+    host=db_host,
+    database=db_name,
+    user=db_user,
+    password=db_password
+)
+
+def perform_migration():
+    print("Migration Sync is enabled!")
+    while True:
+        try:
+            transfer_votes()
+            # current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")  # Format the timestamp
+            # print("MIGRATION COMPLETE")
+            # app.logger.info("Migration Synced")
+        except Exception as e:
+            print("Error during migration:", e)
+        #time.sleep(2)  # Wait for 10 seconds before the next migration
 
 def transfer_votes():
     # Retrieve votes from Redis and insert into PostgreSQL
@@ -85,4 +107,5 @@ def transfer_votes():
         print(e)  # Print the error for debugging
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5002, debug=True)
+    perform_migration()
+
